@@ -1,0 +1,65 @@
+# images/docker-compose.ai.yml
+version: "3.0"
+
+volumes:
+  ai_system:
+    external: true
+
+services:
+  activationbase_ai:
+    image: goendalf666/activationbase_aicps:latest
+    container_name: activationbase_ai
+    volumes:
+      - ai_system:/tmp
+    command:
+      - sh
+      - -c
+      - |
+        echo "[activationbase_ai] Removing old /tmp/activationBase..."
+        rm -rf /tmp/activationBase
+        mkdir -p /tmp/activationBase
+        
+        echo "[activationbase_ai] Copying from /app/activationBase -> /tmp/activationBase..."
+        cp -r /app/activationBase/* /tmp/activationBase/ 2>/dev/null || true
+        
+        echo "[activationbase_ai] Done copying. Container will keep running..."
+        tail -f /dev/null
+
+  knowledgebase_ai:
+    image: goendalf666/knowledgebase_aicps:latest
+    container_name: knowledgebase_ai
+    volumes:
+      - ai_system:/tmp
+    command:
+      - sh
+      - -c
+      - |
+        echo "[knowledgebase_ai] Removing old /tmp/knowledgeBase..."
+        rm -rf /tmp/knowledgeBase
+        mkdir -p /tmp/knowledgeBase
+        
+        echo "[knowledgebase_ai] Copying from /app/knowledgeBase -> /tmp/knowledgeBase..."
+        cp -r /app/knowledgeBase/* /tmp/knowledgeBase/ 2>/dev/null || true
+        
+        echo "[knowledgebase_ai] Done copying. Container will keep running..."
+        tail -f /dev/null
+
+  codebase_ai:
+    image: goendalf666/codebase_aicps:latest
+    container_name: codebase_ai
+    depends_on:
+      - activationbase_ai
+      - knowledgebase_ai
+    volumes:
+      - ai_system:/tmp
+    # Override CMD - but we won't run the script automatically. We'll keep it alive.
+    command:
+      - sh
+      - -c
+      - |
+        echo "[codebase_ai] Container is up. The script is in /app/codeBase/apply_annSolution.py"
+        echo "[codebase_ai] Activation data: /tmp/activationBase/activation_data.csv"
+        echo "[codebase_ai] Model:          /tmp/knowledgeBase/sarcasm_model.keras"
+        
+        echo "[codebase_ai] Container will keep running..."
+        tail -f /dev/null
