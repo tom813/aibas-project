@@ -1,0 +1,10 @@
+# images/part3/Dockerfile.activationBase
+FROM busybox
+
+RUN mkdir -p /app/activationBase
+
+# Add your CSV and README
+COPY activation_data.csv /app/activationBase/
+COPY Readme_activationBase.md /app/activationBase/README.md
+
+CMD ["echo", "[activationbase_aicps] BusyBox container with activation_data.csv"]

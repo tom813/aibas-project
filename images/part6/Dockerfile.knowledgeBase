@@ -1,0 +1,13 @@
+# Dockerfile.knowledgeBase
+FROM busybox
+
+RUN mkdir -p /app/knowledgeBase
+
+# COPY the two model files from your code folder
+COPY ../../code/learningBase/sarcasm_model.h5 /app/knowledgeBase/
+COPY ../../code/learningBase_ols/currentOlsSoluGon.pickle /app/knowledgeBase/
+
+# Use the correct path for the README
+COPY images/part6/Readme_knowledgeBase.md /app/knowledgeBase/README.md
+
+CMD ["echo", "[knowledgebase_aicps] BusyBox container with AI and OLS models"]

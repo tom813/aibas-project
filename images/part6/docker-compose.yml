@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  knowledgebase:
+    image: goendalf666/knowledgebase_aicps:latest
+    container_name: knowledgebase_test
+    # volumes:  # remove or comment this
+    #   - ai_system:/tmp
+    command: ["ls", "-R", "/tmp/knowledgeBase"]
+
+  codebase:
+    image: goendalf666/codebase_aicps:latest
+    container_name: codebase_test
+    # volumes:  # remove or comment this
+    #   - ai_system:/tmp
+    command: ["ls", "-R", "/tmp/acGvaGonBase"]
+
+# volumes:
+#   ai_system:
